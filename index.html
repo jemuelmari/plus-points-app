@@ -28,6 +28,11 @@
       </div>
 
       <button onclick="loginUser()" class="primary-btn" id="login-btn">Log In</button>
+      
+      <div style="text-align: center; margin-top: 16px;">
+        <button onclick="openRegisterModal()" class="text-btn">Create a Student Account</button>
+      </div>
+
       <div id="login-error" class="error-msg"></div>
     </div>
   </div>
@@ -43,7 +48,6 @@
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
       
-      <!-- TERM SELECTOR PARA SA STUDENT -->
       <div class="input-group" style="margin-bottom: 16px;">
         <label>School Term</label>
         <select id="student-term-select" onchange="loadStudentData()" class="term-select">
@@ -69,9 +73,7 @@
       <h3>Submit Items</h3>
       <p class="subtitle">Select items you brought and upload a photo as proof.</p>
       
-      <div id="items-list">
-        <!-- Items will be populated by JS -->
-      </div>
+      <div id="items-list"></div>
 
       <div class="upload-section">
         <label for="evidence-photo" class="custom-file-upload">
@@ -141,6 +143,41 @@
         <button onclick="saveProfile()" class="primary-btn" id="save-profile-btn">Save</button>
       </div>
       <div id="profile-status" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION MODAL -->
+  <div id="register-modal" class="modal-overlay">
+    <div class="glass-card modal-content">
+      <h3>Create Account</h3>
+      <p class="subtitle">Register as a student.</p>
+      
+      <div class="input-group">
+        <label>LRN (Learner Reference Number)</label>
+        <input type="text" id="reg-lrn" placeholder="Enter your LRN">
+      </div>
+      <div class="input-group">
+        <label>Last Name</label>
+        <input type="text" id="reg-lastname" placeholder="e.g. Dela Cruz">
+      </div>
+      <div class="input-group">
+        <label>First Name</label>
+        <input type="text" id="reg-firstname" placeholder="e.g. Juan">
+      </div>
+      <div class="input-group">
+        <label>Middle Name (Optional)</label>
+        <input type="text" id="reg-middlename" placeholder="e.g. Santos">
+      </div>
+      <div class="input-group">
+        <label>Create Password</label>
+        <input type="password" id="reg-password" placeholder="Enter a secure password">
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button onclick="closeRegisterModal()" class="secondary-btn">Cancel</button>
+        <button onclick="registerStudent()" class="primary-btn" id="register-btn">Register</button>
+      </div>
+      <div id="register-status" class="status-msg"></div>
     </div>
   </div>
 
