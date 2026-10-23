@@ -146,14 +146,37 @@ function loadStudentData() {
   });
 }
 
-// IMAGE UPLOAD HANDLER
+// IMAGE UPLOAD HANDLER (MAY COMPRESSION NA)
 document.getElementById('evidence-photo').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (file) {
-    document.getElementById('file-name').textContent = file.name;
+    document.getElementById('file-name').textContent = "Compressing...";
+    
     const reader = new FileReader();
     reader.onload = function(event) {
-      fileBase64 = event.target.result;
+      const img = new Image();
+      img.onload = function() {
+        // Gumawa ng canvas para paliitin ang image
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const scaleSize = MAX_WIDTH / img.width;
+        
+        if (scaleSize < 1) {
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+        } else {
+          canvas.width = img.width;
+          canvas.height = img.height;
+        }
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Gawing 70% quality JPEG
+        fileBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        document.getElementById('file-name').textContent = file.name + " (Ready)";
+      };
+      img.src = event.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -240,6 +263,11 @@ function submitItems() {
         btn.textContent = "Submit Items";
         btn.disabled = false;
       }
+    })
+    .catch(err => {
+      showStatus("Error uploading. Baka masyadong malaki ang photo.", "red");
+      btn.textContent = "Submit Items";
+      btn.disabled = false;
     });
   } else {
     // No image, just save items
