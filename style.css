@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-color: #f5f5f7;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --text-main: #1d1d1f;
+  --text-sub: #86868b;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --danger: #ff3b30;
+  --success: #34c759;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+  color: var(--text-main);
+}
+
+.view {
+  display: none;
+  width: 100%;
+  max-width: 500px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.view.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glassmorphism */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.login-card {
+  margin-top: 10vh;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--text-sub);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+  margin-left: 4px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.8);
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+}
+
+/* Buttons */
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.primary-btn:active {
+  background: var(--accent-hover);
+  transform: scale(0.98);
+}
+
+.logout-btn {
+  background: rgba(0,0,0,0.05);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--danger);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Student Points Summary */
+.points-summary {
+  display: flex;
+  gap: 12px;
+}
+
+.points-box {
+  flex: 1;
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.points-box.highlight {
+  background: var(--accent);
+  color: white;
+}
+
+.points-label {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.points-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Items List */
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.item-row:last-child {
+  border-bottom: none;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-name {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.item-points {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+/* Quantity Counter */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: none;
+  background: white;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.qty-btn:active {
+  background: #e5e5ea;
+}
+
+.qty-input {
+  width: 30px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+}
+
+/* Upload Section */
+.upload-section {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px dashed rgba(0,0,0,0.2);
+  border-radius: 12px;
+  text-align: center;
+  background: rgba(255,255,255,0.4);
+}
+
+.custom-file-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+#file-name {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+/* Messages */
+.error-msg { color: var(--danger); font-size: 14px; text-align: center; margin-top: 12px; }
+.status-msg { font-size: 14px; text-align: center; margin-top: 12px; }
+
+/* Teacher Records */
+.record-item {
+  padding: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.record-name { font-weight: 600; font-size: 15px; }
+.record-details { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
