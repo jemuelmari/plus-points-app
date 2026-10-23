@@ -277,11 +277,10 @@ function showStatus(msg, color) {
   setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
-// PROFILE LOGIC (NEW)
+// PROFILE LOGIC
 function openProfileModal() {
   if (!currentUser) return;
   
-  // Hatiin ang pangalan pabalik sa Last, First, Middle
   const nameParts = currentUser.name.split(',');
   const lastName = nameParts[0] ? nameParts[0].trim() : "";
   const firstName = nameParts[1] ? nameParts[1].trim().split(' ')[0] : "";
@@ -338,7 +337,6 @@ function saveProfile() {
       status.textContent = "Profile updated successfully!";
       status.style.color = "var(--success)";
       
-      // I-update ang display name sa app
       currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim();
       localStorage.setItem('plusPointsUser', JSON.stringify(currentUser));
       document.getElementById('student-name').textContent = currentUser.name;
@@ -351,6 +349,81 @@ function saveProfile() {
   })
   .catch(err => {
     btn.textContent = "Save";
+    btn.disabled = false;
+    status.textContent = "Network error. Try again.";
+    status.style.color = "var(--danger)";
+  });
+}
+
+// REGISTRATION LOGIC (NEW)
+function openRegisterModal() {
+  document.getElementById('reg-lrn').value = "";
+  document.getElementById('reg-lastname').value = "";
+  document.getElementById('reg-firstname').value = "";
+  document.getElementById('reg-middlename').value = "";
+  document.getElementById('reg-password').value = "";
+  
+  document.getElementById('register-modal').classList.add('active');
+}
+
+function closeRegisterModal() {
+  document.getElementById('register-modal').classList.remove('active');
+  document.getElementById('register-status').textContent = "";
+}
+
+function registerStudent() {
+  const lrn = document.getElementById('reg-lrn').value.trim();
+  const lastName = document.getElementById('reg-lastname').value.trim();
+  const firstName = document.getElementById('reg-firstname').value.trim();
+  const middleName = document.getElementById('reg-middlename').value.trim();
+  const password = document.getElementById('reg-password').value;
+  
+  const btn = document.getElementById('register-btn');
+  const status = document.getElementById('register-status');
+
+  if (!lrn || !lastName || !firstName || !password) {
+    status.textContent = "Please fill in all required fields.";
+    status.style.color = "var(--danger)";
+    return;
+  }
+
+  btn.textContent = "Registering...";
+  btn.disabled = true;
+  status.textContent = "";
+
+  fetch(BACKEND_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'register',
+      lrn: lrn,
+      lastName: lastName,
+      firstName: firstName,
+      middleName: middleName,
+      password: password,
+      role: 'student'
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.textContent = "Register";
+    btn.disabled = false;
+
+    if (data.ok) {
+      status.textContent = "Account created! You can now log in.";
+      status.style.color = "var(--success)";
+      
+      // Auto-fill login details
+      document.getElementById('username').value = lrn;
+      document.getElementById('password').value = password;
+      
+      setTimeout(() => { closeRegisterModal(); }, 2000);
+    } else {
+      status.textContent = data.error || "Registration failed.";
+      status.style.color = "var(--danger)";
+    }
+  })
+  .catch(err => {
+    btn.textContent = "Register";
     btn.disabled = false;
     status.textContent = "Network error. Try again.";
     status.style.color = "var(--danger)";
