@@ -62,6 +62,7 @@ function loginUser() {
         loadStudentData(); 
       } else if (data.role === 'teacher') {
         showView('teacher-page');
+        document.getElementById('teacher-name').textContent = data.name; // Ipapakita ang pangalan ng teacher
         loadTeacherData();
       }
     } else {
@@ -93,6 +94,7 @@ function checkSession() {
       loadStudentData();
     } else {
       showView('teacher-page');
+      document.getElementById('teacher-name').textContent = currentUser.name;
       loadTeacherData();
     }
   }
@@ -277,7 +279,7 @@ function showStatus(msg, color) {
   setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
-// PROFILE LOGIC
+// PROFILE LOGIC (PARA SA STUDENT AT TEACHER)
 function openProfileModal() {
   if (!currentUser) return;
   
@@ -339,7 +341,13 @@ function saveProfile() {
       
       currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim();
       localStorage.setItem('plusPointsUser', JSON.stringify(currentUser));
-      document.getElementById('student-name').textContent = currentUser.name;
+      
+      // I-update ang display depende kung student o teacher
+      if (currentUser.role === 'student') {
+        document.getElementById('student-name').textContent = currentUser.name;
+      } else {
+        document.getElementById('teacher-name').textContent = currentUser.name;
+      }
 
       setTimeout(() => { closeProfileModal(); }, 1500);
     } else {
@@ -355,7 +363,7 @@ function saveProfile() {
   });
 }
 
-// REGISTRATION LOGIC (NEW)
+// REGISTRATION LOGIC
 function openRegisterModal() {
   document.getElementById('reg-lrn').value = "";
   document.getElementById('reg-lastname').value = "";
@@ -412,7 +420,6 @@ function registerStudent() {
       status.textContent = "Account created! You can now log in.";
       status.style.color = "var(--success)";
       
-      // Auto-fill login details
       document.getElementById('username').value = lrn;
       document.getElementById('password').value = password;
       
