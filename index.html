@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ffffff">
-  <!-- Apple Touch Icon -->
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
 </head>
 <body>
@@ -40,6 +39,17 @@
         <h3 id="student-name">Loading...</h3>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
+      
+      <!-- TERM SELECTOR PARA SA STUDENT -->
+      <div class="input-group" style="margin-bottom: 16px;">
+        <label>School Term</label>
+        <select id="student-term-select" onchange="loadStudentData()" class="term-select">
+          <option value="Term 1">Term 1</option>
+          <option value="Term 2">Term 2</option>
+          <option value="Term 3">Term 3</option>
+        </select>
+      </div>
+
       <div class="points-summary">
         <div class="points-box">
           <span class="points-label">Total Stickers</span>
@@ -65,7 +75,6 @@
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
           Select Photo Evidence
         </label>
-        <!-- INALIS ANG capture="environment" DITO -->
         <input id="evidence-photo" type="file" accept="image/*">
         <span id="file-name">No file selected</span>
       </div>
@@ -82,12 +91,21 @@
         <h3>Teacher Dashboard</h3>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
+      
+      <!-- TERM SELECTOR PARA SA TEACHER -->
+      <div class="input-group" style="margin-bottom: 0;">
+        <label>View Records for Term:</label>
+        <select id="teacher-term-select" onchange="loadTeacherData()" class="term-select">
+          <option value="Term 1">Term 1</option>
+          <option value="Term 2">Term 2</option>
+          <option value="Term 3">Term 3</option>
+        </select>
+      </div>
     </div>
 
     <div class="glass-card items-card">
-      <h3>Student Records (Term 1)</h3>
+      <h3>Student Records</h3>
       <div id="teacher-records-list">
-        <!-- Records will be populated by JS -->
         <p style="text-align:center; color:#666;">Loading records...</p>
       </div>
     </div>
