@@ -36,7 +36,10 @@
   <div id="student-page" class="view">
     <div class="glass-card header-card">
       <div class="header-top">
-        <h3 id="student-name">Loading...</h3>
+        <div>
+          <h3 id="student-name">Loading...</h3>
+          <button onclick="openProfileModal()" class="text-btn">Edit Profile</button>
+        </div>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
       
@@ -92,7 +95,6 @@
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
       
-      <!-- TERM SELECTOR PARA SA TEACHER -->
       <div class="input-group" style="margin-bottom: 0;">
         <label>View Records for Term:</label>
         <select id="teacher-term-select" onchange="loadTeacherData()" class="term-select">
@@ -108,6 +110,37 @@
       <div id="teacher-records-list">
         <p style="text-align:center; color:#666;">Loading records...</p>
       </div>
+    </div>
+  </div>
+
+  <!-- EDIT PROFILE MODAL -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="glass-card modal-content">
+      <h3>Edit Profile</h3>
+      <p class="subtitle">Update your personal details.</p>
+      
+      <div class="input-group">
+        <label>Last Name</label>
+        <input type="text" id="edit-lastname">
+      </div>
+      <div class="input-group">
+        <label>First Name</label>
+        <input type="text" id="edit-firstname">
+      </div>
+      <div class="input-group">
+        <label>Middle Name</label>
+        <input type="text" id="edit-middlename">
+      </div>
+      <div class="input-group">
+        <label>New Password (Leave blank to keep current)</label>
+        <input type="password" id="edit-password" placeholder="Optional">
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button onclick="closeProfileModal()" class="secondary-btn">Cancel</button>
+        <button onclick="saveProfile()" class="primary-btn" id="save-profile-btn">Save</button>
+      </div>
+      <div id="profile-status" class="status-msg"></div>
     </div>
   </div>
 
