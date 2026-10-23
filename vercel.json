@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/proxy",
+      "destination": "https://script.google.com/macros/s/AKfycbzbsu4HKBDvSKDJZfSWtKUuHZ2jtB-W51w-Goyz2pczyH9qnBQdIyWBnOutnr-dZcVyuA/exec"
+    }
+  ]
+}
