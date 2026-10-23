@@ -339,10 +339,10 @@ function saveProfile() {
       status.textContent = "Profile updated successfully!";
       status.style.color = "var(--success)";
       
-      currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim();
+      // Ayos na pag-update ng display name
+      currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim().replace(/\s+/g, ' ');
       localStorage.setItem('plusPointsUser', JSON.stringify(currentUser));
       
-      // I-update ang display depende kung student o teacher
       if (currentUser.role === 'student') {
         document.getElementById('student-name').textContent = currentUser.name;
       } else {
