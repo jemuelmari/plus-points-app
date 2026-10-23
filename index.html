@@ -93,7 +93,10 @@
   <div id="teacher-page" class="view">
     <div class="glass-card header-card">
       <div class="header-top">
-        <h3>Teacher Dashboard</h3>
+        <div>
+          <h3 id="teacher-name">Teacher Dashboard</h3>
+          <button onclick="openProfileModal()" class="text-btn">Edit Profile / Password</button>
+        </div>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
       
@@ -115,11 +118,11 @@
     </div>
   </div>
 
-  <!-- EDIT PROFILE MODAL -->
+  <!-- EDIT PROFILE MODAL (Pwede sa Student at Teacher) -->
   <div id="profile-modal" class="modal-overlay">
     <div class="glass-card modal-content">
       <h3>Edit Profile</h3>
-      <p class="subtitle">Update your personal details.</p>
+      <p class="subtitle">Update your personal details or password.</p>
       
       <div class="input-group">
         <label>Last Name</label>
