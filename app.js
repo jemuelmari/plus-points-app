@@ -1,10 +1,8 @@
-// PALITAN ITO NG URL NG WEB APP MO
 const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzbsu4HKBDvSKDJZfSWtKUuHZ2jtB-W51w-Goyz2pczyH9qnBQdIyWBnOutnr-dZcVyuA/exec';
 
 let currentUser = null;
 let fileBase64 = "";
 
-// Item definitions
 const ITEMS = {
   sack: { name: '1 Sack', points: 1 },
   detergent: { name: '3 Detergent Powders', points: 2 },
@@ -19,7 +17,6 @@ const ITEMS = {
   black_soil: { name: '1 Sack Black Soil', points: 5 }
 };
 
-// INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
   checkSession();
   buildItemsList();
@@ -62,7 +59,7 @@ function loginUser() {
       if (data.role === 'student') {
         showView('student-page');
         document.getElementById('student-name').textContent = data.name;
-        loadStudentData();
+        loadStudentData(); // Tatawagin na nito ang sarili niyang term
       } else if (data.role === 'teacher') {
         showView('teacher-page');
         loadTeacherData();
@@ -133,9 +130,11 @@ function updateQty(key, change) {
 
 function loadStudentData() {
   if (!currentUser) return;
+  const term = document.getElementById('student-term-select').value;
+  
   fetch(BACKEND_URL, {
     method: 'POST',
-    body: JSON.stringify({ action: 'getSummary', lrn: currentUser.lrn, term: 'Term 1' })
+    body: JSON.stringify({ action: 'getSummary', lrn: currentUser.lrn, term: term })
   })
   .then(res => res.json())
   .then(data => {
@@ -146,7 +145,7 @@ function loadStudentData() {
   });
 }
 
-// IMAGE UPLOAD HANDLER (MAY COMPRESSION NA)
+// IMAGE UPLOAD HANDLER
 document.getElementById('evidence-photo').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (file) {
@@ -156,7 +155,6 @@ document.getElementById('evidence-photo').addEventListener('change', function(e)
     reader.onload = function(event) {
       const img = new Image();
       img.onload = function() {
-        // Gumawa ng canvas para paliitin ang image
         const canvas = document.createElement('canvas');
         const MAX_WIDTH = 800;
         const scaleSize = MAX_WIDTH / img.width;
@@ -172,7 +170,6 @@ document.getElementById('evidence-photo').addEventListener('change', function(e)
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         
-        // Gawing 70% quality JPEG
         fileBase64 = canvas.toDataURL('image/jpeg', 0.7);
         document.getElementById('file-name').textContent = file.name + " (Ready)";
       };
@@ -185,6 +182,7 @@ document.getElementById('evidence-photo').addEventListener('change', function(e)
 // SUBMIT ITEMS (Student)
 function submitItems() {
   if (!currentUser) return;
+  const term = document.getElementById('student-term-select').value;
   
   const itemsToSave = [];
   for (const key in ITEMS) {
@@ -201,20 +199,18 @@ function submitItems() {
   btn.textContent = "Submitting...";
   btn.disabled = true;
 
-  // Function to process queue one by one
   const processQueue = (index, evidenceUrl) => {
     if (index >= itemsToSave.length) {
       showStatus("Successfully submitted!", "green");
       btn.textContent = "Submit Items";
       btn.disabled = false;
       
-      // Reset form
       for (const key in ITEMS) document.getElementById(`qty-${key}`).value = "0";
       document.getElementById('evidence-photo').value = "";
       document.getElementById('file-name').textContent = "No file selected";
       fileBase64 = "";
       
-      loadStudentData(); // Refresh points
+      loadStudentData();
       return;
     }
 
@@ -227,13 +223,13 @@ function submitItems() {
         itemKey: item.key,
         quantity: item.qty,
         evidenceUrl: evidenceUrl,
-        term: 'Term 1'
+        term: term // Dito natin pinapasok ang napiling Term
       })
     })
     .then(res => res.json())
     .then(data => {
       if (data.ok) {
-        processQueue(index + 1, evidenceUrl); // proceed to next
+        processQueue(index + 1, evidenceUrl);
       } else {
         showStatus("Error saving record: " + data.error, "red");
         btn.textContent = "Submit Items";
@@ -242,7 +238,6 @@ function submitItems() {
     });
   };
 
-  // If there's an image, upload it first, then process items
   if (fileBase64) {
     btn.textContent = "Uploading photo...";
     fetch(BACKEND_URL, {
@@ -270,7 +265,6 @@ function submitItems() {
       btn.disabled = false;
     });
   } else {
-    // No image, just save items
     btn.textContent = "Saving records...";
     processQueue(0, "");
   }
@@ -286,9 +280,13 @@ function showStatus(msg, color) {
 // TEACHER LOGIC
 function loadTeacherData() {
   const container = document.getElementById('teacher-records-list');
+  const term = document.getElementById('teacher-term-select').value;
+  
+  container.innerHTML = "<p style='text-align:center; color:#666;'>Loading records...</p>";
+
   fetch(BACKEND_URL, {
     method: 'POST',
-    body: JSON.stringify({ action: 'getAllStudents', term: 'Term 1' })
+    body: JSON.stringify({ action: 'getAllStudents', term: term })
   })
   .then(res => res.json())
   .then(data => {
@@ -306,7 +304,10 @@ function loadTeacherData() {
       });
       container.innerHTML = html;
     } else {
-      container.innerHTML = "<p style='text-align:center; color:#666;'>No records found yet.</p>";
+      container.innerHTML = `<p style='text-align:center; color:#666;'>No records found for ${term}.</p>`;
     }
+  })
+  .catch(err => {
+    container.innerHTML = "<p style='text-align:center; color:red;'>Error loading data.</p>";
   });
 }
