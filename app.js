@@ -59,7 +59,7 @@ function loginUser() {
       if (data.role === 'student') {
         showView('student-page');
         document.getElementById('student-name').textContent = data.name;
-        loadStudentData(); // Tatawagin na nito ang sarili niyang term
+        loadStudentData(); 
       } else if (data.role === 'teacher') {
         showView('teacher-page');
         loadTeacherData();
@@ -223,7 +223,7 @@ function submitItems() {
         itemKey: item.key,
         quantity: item.qty,
         evidenceUrl: evidenceUrl,
-        term: term // Dito natin pinapasok ang napiling Term
+        term: term 
       })
     })
     .then(res => res.json())
@@ -275,6 +275,86 @@ function showStatus(msg, color) {
   el.textContent = msg;
   el.style.color = color === "green" ? "var(--success)" : "var(--danger)";
   setTimeout(() => { el.textContent = ""; }, 4000);
+}
+
+// PROFILE LOGIC (NEW)
+function openProfileModal() {
+  if (!currentUser) return;
+  
+  // Hatiin ang pangalan pabalik sa Last, First, Middle
+  const nameParts = currentUser.name.split(',');
+  const lastName = nameParts[0] ? nameParts[0].trim() : "";
+  const firstName = nameParts[1] ? nameParts[1].trim().split(' ')[0] : "";
+  const middleName = nameParts[1] ? nameParts[1].trim().split(' ').slice(1).join(' ') : "";
+
+  document.getElementById('edit-lastname').value = lastName;
+  document.getElementById('edit-firstname').value = firstName;
+  document.getElementById('edit-middlename').value = middleName;
+  document.getElementById('edit-password').value = "";
+  
+  document.getElementById('profile-modal').classList.add('active');
+}
+
+function closeProfileModal() {
+  document.getElementById('profile-modal').classList.remove('active');
+  document.getElementById('profile-status').textContent = "";
+}
+
+function saveProfile() {
+  const lastName = document.getElementById('edit-lastname').value.trim();
+  const firstName = document.getElementById('edit-firstname').value.trim();
+  const middleName = document.getElementById('edit-middlename').value.trim();
+  const newPassword = document.getElementById('edit-password').value;
+  const btn = document.getElementById('save-profile-btn');
+  const status = document.getElementById('profile-status');
+
+  if (!firstName || !lastName) {
+    status.textContent = "First and Last Name are required.";
+    status.style.color = "var(--danger)";
+    return;
+  }
+
+  btn.textContent = "Saving...";
+  btn.disabled = true;
+  status.textContent = "";
+
+  fetch(BACKEND_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'updateProfile',
+      lrn: currentUser.lrn,
+      lastName: lastName,
+      firstName: firstName,
+      middleName: middleName,
+      newPassword: newPassword
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.textContent = "Save";
+    btn.disabled = false;
+
+    if (data.ok) {
+      status.textContent = "Profile updated successfully!";
+      status.style.color = "var(--success)";
+      
+      // I-update ang display name sa app
+      currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim();
+      localStorage.setItem('plusPointsUser', JSON.stringify(currentUser));
+      document.getElementById('student-name').textContent = currentUser.name;
+
+      setTimeout(() => { closeProfileModal(); }, 1500);
+    } else {
+      status.textContent = data.error || "Failed to update profile.";
+      status.style.color = "var(--danger)";
+    }
+  })
+  .catch(err => {
+    btn.textContent = "Save";
+    btn.disabled = false;
+    status.textContent = "Network error. Try again.";
+    status.style.color = "var(--danger)";
+  });
 }
 
 // TEACHER LOGIC
