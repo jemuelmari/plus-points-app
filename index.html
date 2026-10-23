@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Plus Points System</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Apple Touch Icon (Gagamit muna tayo ng generic na icon) -->
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <div id="login-page" class="view active">
+    <div class="glass-card login-card">
+      <h2>Welcome</h2>
+      <p class="subtitle">Plus Points System</p>
+      
+      <div class="input-group">
+        <label>Username (LRN / Employee ID)</label>
+        <input type="text" id="username" placeholder="Enter your LRN or ID">
+      </div>
+      
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter your password">
+      </div>
+
+      <button onclick="loginUser()" class="primary-btn" id="login-btn">Log In</button>
+      <div id="login-error" class="error-msg"></div>
+    </div>
+  </div>
+
+  <!-- STUDENT DASHBOARD -->
+  <div id="student-page" class="view">
+    <div class="glass-card header-card">
+      <div class="header-top">
+        <h3 id="student-name">Loading...</h3>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      </div>
+      <div class="points-summary">
+        <div class="points-box">
+          <span class="points-label">Total Stickers</span>
+          <span class="points-value" id="student-stickers">0</span>
+        </div>
+        <div class="points-box highlight">
+          <span class="points-label">Total Points</span>
+          <span class="points-value" id="student-points">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card items-card">
+      <h3>Submit Items</h3>
+      <p class="subtitle">Select items you brought and upload a photo as proof.</p>
+      
+      <div id="items-list">
+        <!-- Items will be populated by JS -->
+      </div>
+
+      <div class="upload-section">
+        <label for="evidence-photo" class="custom-file-upload">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          Select Photo Evidence
+        </label>
+        <input id="evidence-photo" type="file" accept="image/*" capture="environment">
+        <span id="file-name">No file selected</span>
+      </div>
+
+      <button onclick="submitItems()" class="primary-btn" id="submit-btn">Submit Items</button>
+      <div id="submit-status" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- TEACHER DASHBOARD -->
+  <div id="teacher-page" class="view">
+    <div class="glass-card header-card">
+      <div class="header-top">
+        <h3>Teacher Dashboard</h3>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+      </div>
+    </div>
+
+    <div class="glass-card items-card">
+      <h3>Student Records (Term 1)</h3>
+      <div id="teacher-records-list">
+        <!-- Records will be populated by JS -->
+        <p style="text-align:center; color:#666;">Loading records...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
