@@ -62,7 +62,7 @@ function loginUser() {
         loadStudentData(); 
       } else if (data.role === 'teacher') {
         showView('teacher-page');
-        document.getElementById('teacher-name').textContent = data.name; // Ipapakita ang pangalan ng teacher
+        document.getElementById('teacher-name').textContent = data.name;
         loadTeacherData();
       }
     } else {
@@ -279,7 +279,7 @@ function showStatus(msg, color) {
   setTimeout(() => { el.textContent = ""; }, 4000);
 }
 
-// PROFILE LOGIC (PARA SA STUDENT AT TEACHER)
+// PROFILE LOGIC
 function openProfileModal() {
   if (!currentUser) return;
   
@@ -339,7 +339,6 @@ function saveProfile() {
       status.textContent = "Profile updated successfully!";
       status.style.color = "var(--success)";
       
-      // Ayos na pag-update ng display name
       currentUser.name = `${lastName}, ${firstName} ${middleName}`.trim().replace(/\s+/g, ' ');
       localStorage.setItem('plusPointsUser', JSON.stringify(currentUser));
       
@@ -431,6 +430,68 @@ function registerStudent() {
   })
   .catch(err => {
     btn.textContent = "Register";
+    btn.disabled = false;
+    status.textContent = "Network error. Try again.";
+    status.style.color = "var(--danger)";
+  });
+}
+
+// RESET PASSWORD LOGIC (BAGO)
+function openResetModal() {
+  document.getElementById('reset-username').value = "";
+  document.getElementById('reset-newpassword').value = "";
+  document.getElementById('reset-modal').classList.add('active');
+}
+
+function closeResetModal() {
+  document.getElementById('reset-modal').classList.remove('active');
+  document.getElementById('reset-status').textContent = "";
+}
+
+function resetPassword() {
+  const username = document.getElementById('reset-username').value.trim();
+  const newPassword = document.getElementById('reset-newpassword').value;
+  const btn = document.getElementById('reset-btn');
+  const status = document.getElementById('reset-status');
+
+  if (!username || !newPassword) {
+    status.textContent = "Please enter your LRN and new password.";
+    status.style.color = "var(--danger)";
+    return;
+  }
+
+  btn.textContent = "Resetting...";
+  btn.disabled = true;
+  status.textContent = "";
+
+  fetch(BACKEND_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'resetPassword',
+      username: username,
+      newPassword: newPassword
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.textContent = "Reset Password";
+    btn.disabled = false;
+
+    if (data.ok) {
+      status.textContent = "Password reset successful! You can now log in.";
+      status.style.color = "var(--success)";
+      
+      document.getElementById('username').value = username;
+      document.getElementById('password').value = newPassword;
+      
+      setTimeout(() => { closeResetModal(); }, 2000);
+    } else {
+      status.textContent = data.error || "Reset failed.";
+      status.style.color = "var(--danger)";
+    }
+  })
+  .catch(err => {
+    btn.textContent = "Reset Password";
     btn.disabled = false;
     status.textContent = "Network error. Try again.";
     status.style.color = "var(--danger)";
