@@ -7,38 +7,29 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ffffff">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135810.png">
 </head>
 <body>
-
-  <!-- LOGIN PAGE -->
   <div id="login-page" class="view active">
     <div class="glass-card login-card">
       <h2>Welcome</h2>
       <p class="subtitle">Plus Points System</p>
-      
       <div class="input-group">
         <label>Username (LRN / Employee ID)</label>
         <input type="text" id="username" placeholder="Enter your LRN or ID">
       </div>
-      
       <div class="input-group">
         <label>Password</label>
         <input type="password" id="password" placeholder="Enter your password">
       </div>
-
       <button onclick="loginUser()" class="primary-btn" id="login-btn">Log In</button>
-      
       <div style="text-align: center; margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
-        <button onclick="openRegisterModal()" class="text-btn">Create a Student Account</button>
+        <button onclick="openRegisterModal()" class="text-btn">Create an Account</button>
         <button onclick="openResetModal()" class="text-btn" style="color: var(--text-sub);">Forgot Password?</button>
       </div>
-
       <div id="login-error" class="error-msg"></div>
     </div>
   </div>
 
-  <!-- STUDENT DASHBOARD -->
   <div id="student-page" class="view">
     <div class="glass-card header-card">
       <div class="header-top">
@@ -48,7 +39,6 @@
         </div>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
-      
       <div class="input-group" style="margin-bottom: 16px;">
         <label>School Term</label>
         <select id="student-term-select" onchange="loadStudentData()" class="term-select">
@@ -57,7 +47,6 @@
           <option value="Term 3">Term 3</option>
         </select>
       </div>
-
       <div class="points-summary">
         <div class="points-box">
           <span class="points-label">Total Stickers</span>
@@ -69,13 +58,10 @@
         </div>
       </div>
     </div>
-
     <div class="glass-card items-card">
       <h3>Submit Items</h3>
       <p class="subtitle">Select items you brought and upload a photo as proof.</p>
-      
       <div id="items-list"></div>
-
       <div class="upload-section">
         <label for="evidence-photo" class="custom-file-upload">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
@@ -84,13 +70,11 @@
         <input id="evidence-photo" type="file" accept="image/*">
         <span id="file-name">No file selected</span>
       </div>
-
       <button onclick="submitItems()" class="primary-btn" id="submit-btn">Submit Items</button>
       <div id="submit-status" class="status-msg"></div>
     </div>
   </div>
 
-  <!-- TEACHER DASHBOARD -->
   <div id="teacher-page" class="view">
     <div class="glass-card header-card">
       <div class="header-top">
@@ -100,7 +84,6 @@
         </div>
         <button onclick="logout()" class="logout-btn">Logout</button>
       </div>
-      
       <div class="input-group" style="margin-bottom: 0;">
         <label>View Records for Term:</label>
         <select id="teacher-term-select" onchange="loadTeacherData()" class="term-select">
@@ -110,7 +93,6 @@
         </select>
       </div>
     </div>
-
     <div class="glass-card items-card">
       <h3>Student Records</h3>
       <div id="teacher-records-list">
@@ -119,29 +101,14 @@
     </div>
   </div>
 
-  <!-- EDIT PROFILE MODAL -->
   <div id="profile-modal" class="modal-overlay">
     <div class="glass-card modal-content">
       <h3>Edit Profile</h3>
-      <p class="subtitle">Update your personal details or password.</p>
-      
-      <div class="input-group">
-        <label>Last Name</label>
-        <input type="text" id="edit-lastname">
-      </div>
-      <div class="input-group">
-        <label>First Name</label>
-        <input type="text" id="edit-firstname">
-      </div>
-      <div class="input-group">
-        <label>Middle Name</label>
-        <input type="text" id="edit-middlename">
-      </div>
-      <div class="input-group">
-        <label>New Password (Leave blank to keep current)</label>
-        <input type="password" id="edit-password" placeholder="Optional">
-      </div>
-
+      <p class="subtitle">Update your details or password.</p>
+      <div class="input-group"><label>Last Name</label><input type="text" id="edit-lastname"></div>
+      <div class="input-group"><label>First Name</label><input type="text" id="edit-firstname"></div>
+      <div class="input-group"><label>Middle Name</label><input type="text" id="edit-middlename"></div>
+      <div class="input-group"><label>New Password (Optional)</label><input type="password" id="edit-password"></div>
       <div style="display: flex; gap: 10px; margin-top: 16px;">
         <button onclick="closeProfileModal()" class="secondary-btn">Cancel</button>
         <button onclick="saveProfile()" class="primary-btn" id="save-profile-btn">Save</button>
@@ -150,64 +117,41 @@
     </div>
   </div>
 
-  <!-- REGISTRATION MODAL -->
   <div id="register-modal" class="modal-overlay">
     <div class="glass-card modal-content">
       <h3>Create Account</h3>
-      <p class="subtitle">Register as a student.</p>
-      
-      <div class="input-group">
-        <label>LRN (Learner Reference Number)</label>
-        <input type="text" id="reg-lrn" placeholder="Enter your LRN">
+      <p class="subtitle">Register as a student or teacher.</p>
+      <div class="input-group"><label>Role</label>
+        <select id="reg-role" class="term-select">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
       </div>
-      <div class="input-group">
-        <label>Last Name</label>
-        <input type="text" id="reg-lastname" placeholder="e.g. Dela Cruz">
-      </div>
-      <div class="input-group">
-        <label>First Name</label>
-        <input type="text" id="reg-firstname" placeholder="e.g. Juan">
-      </div>
-      <div class="input-group">
-        <label>Middle Name (Optional)</label>
-        <input type="text" id="reg-middlename" placeholder="e.g. Santos">
-      </div>
-      <div class="input-group">
-        <label>Create Password</label>
-        <input type="password" id="reg-password" placeholder="Enter a secure password">
-      </div>
-
+      <div class="input-group"><label>LRN / Employee ID</label><input type="text" id="reg-lrn"></div>
+      <div class="input-group"><label>Last Name</label><input type="text" id="reg-lastname"></div>
+      <div class="input-group"><label>First Name</label><input type="text" id="reg-firstname"></div>
+      <div class="input-group"><label>Middle Name</label><input type="text" id="reg-middlename"></div>
+      <div class="input-group"><label>Create Password</label><input type="password" id="reg-password"></div>
       <div style="display: flex; gap: 10px; margin-top: 16px;">
         <button onclick="closeRegisterModal()" class="secondary-btn">Cancel</button>
-        <button onclick="registerStudent()" class="primary-btn" id="register-btn">Register</button>
+        <button onclick="registerUser()" class="primary-btn" id="register-btn">Register</button>
       </div>
       <div id="register-status" class="status-msg"></div>
     </div>
   </div>
 
-  <!-- RESET PASSWORD MODAL (BAGO) -->
   <div id="reset-modal" class="modal-overlay">
     <div class="glass-card modal-content">
       <h3>Reset Password</h3>
-      <p class="subtitle">Enter your LRN and new password.</p>
-      
-      <div class="input-group">
-        <label>Username (LRN / Employee ID)</label>
-        <input type="text" id="reset-username" placeholder="Enter your LRN or ID">
-      </div>
-      <div class="input-group">
-        <label>New Password</label>
-        <input type="password" id="reset-newpassword" placeholder="Enter your new password">
-      </div>
-
+      <div class="input-group"><label>LRN / Employee ID</label><input type="text" id="reset-username"></div>
+      <div class="input-group"><label>New Password</label><input type="password" id="reset-newpassword"></div>
       <div style="display: flex; gap: 10px; margin-top: 16px;">
         <button onclick="closeResetModal()" class="secondary-btn">Cancel</button>
-        <button onclick="resetPassword()" class="primary-btn" id="reset-btn">Reset Password</button>
+        <button onclick="resetPassword()" class="primary-btn" id="reset-btn">Reset</button>
       </div>
       <div id="reset-status" class="status-msg"></div>
     </div>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>
