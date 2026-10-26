@@ -29,8 +29,9 @@
 
       <button onclick="loginUser()" class="primary-btn" id="login-btn">Log In</button>
       
-      <div style="text-align: center; margin-top: 16px;">
+      <div style="text-align: center; margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
         <button onclick="openRegisterModal()" class="text-btn">Create a Student Account</button>
+        <button onclick="openResetModal()" class="text-btn" style="color: var(--text-sub);">Forgot Password?</button>
       </div>
 
       <div id="login-error" class="error-msg"></div>
@@ -118,7 +119,7 @@
     </div>
   </div>
 
-  <!-- EDIT PROFILE MODAL (Pwede sa Student at Teacher) -->
+  <!-- EDIT PROFILE MODAL -->
   <div id="profile-modal" class="modal-overlay">
     <div class="glass-card modal-content">
       <h3>Edit Profile</h3>
@@ -181,6 +182,29 @@
         <button onclick="registerStudent()" class="primary-btn" id="register-btn">Register</button>
       </div>
       <div id="register-status" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- RESET PASSWORD MODAL (BAGO) -->
+  <div id="reset-modal" class="modal-overlay">
+    <div class="glass-card modal-content">
+      <h3>Reset Password</h3>
+      <p class="subtitle">Enter your LRN and new password.</p>
+      
+      <div class="input-group">
+        <label>Username (LRN / Employee ID)</label>
+        <input type="text" id="reset-username" placeholder="Enter your LRN or ID">
+      </div>
+      <div class="input-group">
+        <label>New Password</label>
+        <input type="password" id="reset-newpassword" placeholder="Enter your new password">
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button onclick="closeResetModal()" class="secondary-btn">Cancel</button>
+        <button onclick="resetPassword()" class="primary-btn" id="reset-btn">Reset Password</button>
+      </div>
+      <div id="reset-status" class="status-msg"></div>
     </div>
   </div>
 
